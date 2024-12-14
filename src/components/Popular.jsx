@@ -2,29 +2,57 @@ import React, { useEffect, useRef, useState } from "react";
 import MovieCard from "./MovieCard";
 import { getMovies } from "../utils/getMovies";
 
+// list of providers id like netflex,disney plus,amazon prime video and apple tv plus
+const PROVIDERS_ID = {
+  netflex: 8,
+  amazonPrime: 9,
+};
 const Popular = () => {
   const [movieList, setMovieList] = useState(Array(10).fill({}));
-  const [type, setType] = useState("now_playing");
-  const endpointRef = useRef("/movie/now_playing?language=en-US&");
+  const [type, setType] = useState("streaming");
+  const endpointRef = useRef(
+    "/discover/movie?watch_region=US&with_watch_providers=9,8&sort_by=popularity.desc"
+  );
 
-  const handleTrending = (type) => {
-    if (type === "now_playing") {
-      endpointRef.current = "/movie/now_playing?language=en-US&";
-    } else if (type === "ontv") {
-      endpointRef.current = "/movie/ontv?language=en-US&";
+  const getPopularEndpoint = (type, page = 1, providers) => {
+    const providerList = Object.values(providers).join(",");
+    if (type == "now_playing") {
+      return `/movie/now_playing?language=en-US&page=${page}&with_watch_providers=${providerList}&`;
+    } else if (type === "tv") {
+      return `/discover/tv?language=en-US&sort_by=popularity.desc&watch_region=US&with_watch_providers=${providerList}&page=${page}`;
     } else {
-      endpointRef.current = "/discover/movie?language=en-US&";
+      return [
+        `/discover/movie?watch_region=US&with_watch_providers=${providerList}&sort_by=popularity.desc&page=${page}`,
+        `/discover/tv?watch_region=US&with_watch_providers=${providerList}&sort_by=popularity.desc&page=${page}`,
+      ];
     }
+  };
+  const handleTrending = (type) => {
+    endpointRef.current = getPopularEndpoint(
+      (type = type),
+      (providers = PROVIDERS_ID)
+    );
     setType(type);
   };
   useEffect(() => {
-    const endpoint = `/movie/${type}?language=en-US&`;
-    getMovies(endpointRef.current).then((data) => {
-      if (data.results) {
-        setMovieList(data.results);
+    
+    if (type === "streaming") {
+      for (let i = 1; i < 3; i++) {
+        endpointRef.current = getPopularEndpoint(
+          (type = type),
+          (page = i),
+          (providers = PROVIDERS_ID)
+        );
+        getMovies(endpointRef.current).then(data=>);
       }
-      console.log("Movie data: ", data);
-    });
+    } else {
+      getMovies(endpointRef.current).then((data) => {
+        if (data.results) {
+          setMovieList(data.results);
+        }
+        console.log("Movie data: ", data.results);
+      });
+    }
   }, [type]);
   return (
     <section className=" min-h-[400px]  pt-6 mx-2  md:mx-10 xl:mx-28">
@@ -33,13 +61,13 @@ const Popular = () => {
         <div className="relative font-semibold border-solid  border-2 border-black rounded-full flex flex-row">
           <div
             className={`${
-              type === "now" ? "bg-slate-800" : "bg-white"
+              type === "streaming" ? "bg-slate-800" : "bg-white"
             } pr-5 pl-5 rounded-full`}
           >
             <button
-              onClick={() => handleTrending("now")}
+              onClick={() => handleTrending("streaming")}
               className={`${
-                type === "now"
+                type === "streaming"
                   ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
                   : "text-black"
               } `}
@@ -50,13 +78,13 @@ const Popular = () => {
 
           <div
             className={`${
-              type === "onTv" ? "bg-slate-800" : "bg-white"
+              type === "tv" ? "bg-slate-800" : "bg-white"
             } pr-5 pl-5 rounded-full`}
           >
             <button
-              onClick={() => handleTrending("onTv")}
+              onClick={() => handleTrending("tv")}
               className={`${
-                type === "onTv"
+                type === "tv"
                   ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
                   : "text-black"
               } `}
@@ -71,7 +99,7 @@ const Popular = () => {
             } pr-5 pl-5 rounded-full`}
           >
             <button
-              onClick={() => handleTrending("inTheater")}
+              onClick={() => handleTrending("now_playing")}
               className={`${
                 type === "now_playing"
                   ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
