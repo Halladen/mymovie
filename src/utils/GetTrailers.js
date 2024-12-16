@@ -1,46 +1,6 @@
 const API_KEY = import.meta.env.VITE_API_KEY;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-// `${BASE_URL}/trending/movie/week?api_key=${API_KEY}`
-
-// export const getTrailers = async () => {
-//   try {
-//     // Fetch popular movies and TV shows
-//     const popularMovies = await fetch(
-//       `${BASE_URL}/movie/now_playing?api_key=${API_KEY}`
-//     );
-
-//     const results = await popularMovies.json();
-//     const movieList = [];
-//     results.results.map(async (movie) => {
-//       const res = await fetch(
-//         BASE_URL + `/movie/${movie.id}/videos?api_key=` + API_KEY
-//       );
-//       const data = await res.json();
-//       // console.log(movie);
-//       // console.log("--------------------------------------");
-//       data.results.map((trailer) => {
-//         // console.log("trailer: ", trailer.key);
-//         // console.log("-----------------------------------------");
-//         if (trailer.name == "Official Trailer") {
-//           movie.trailer = trailer;
-//           movieList.push(movie);
-//           // console.log(movie);
-//           // console.log("trailer: ", trailer);
-//           // console.log("-----------------------------------------");
-
-//           return movie;
-//         }
-//       });
-//     });
-//     // console.log(results.results);
-//     console.log(movieList);
-//     return results;
-//   } catch (error) {
-//     console.error("Error fetching trailers: ", error);
-//   }
-// };
-
 export const getTrailers = async () => {
   try {
     // Fetch popular movies

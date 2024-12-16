@@ -1,58 +1,43 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
-import { getMovies } from "../utils/getMovies";
+import { getMovies, getEndpoint } from "../utils/helper";
 
-// list of providers id like netflex,disney plus,amazon prime video and apple tv plus
-const PROVIDERS_ID = {
-  netflex: 8,
-  amazonPrime: 9,
-};
 const Popular = () => {
   const [movieList, setMovieList] = useState(Array(10).fill({}));
   const [type, setType] = useState("streaming");
-  const endpointRef = useRef(
-    "/discover/movie?watch_region=US&with_watch_providers=9,8&sort_by=popularity.desc"
-  );
 
-  const getPopularEndpoint = (type, page = 1, providers) => {
-    const providerList = Object.values(providers).join(",");
-    if (type == "now_playing") {
-      return `/movie/now_playing?language=en-US&page=${page}&with_watch_providers=${providerList}&`;
-    } else if (type === "tv") {
-      return `/discover/tv?language=en-US&sort_by=popularity.desc&watch_region=US&with_watch_providers=${providerList}&page=${page}`;
-    } else {
-      return [
-        `/discover/movie?watch_region=US&with_watch_providers=${providerList}&sort_by=popularity.desc&page=${page}`,
-        `/discover/tv?watch_region=US&with_watch_providers=${providerList}&sort_by=popularity.desc&page=${page}`,
-      ];
-    }
-  };
   const handleTrending = (type) => {
-    endpointRef.current = getPopularEndpoint(
-      (type = type),
-      (providers = PROVIDERS_ID)
-    );
     setType(type);
   };
   useEffect(() => {
-    
-    if (type === "streaming") {
-      for (let i = 1; i < 3; i++) {
-        endpointRef.current = getPopularEndpoint(
-          (type = type),
-          (page = i),
-          (providers = PROVIDERS_ID)
-        );
-        getMovies(endpointRef.current).then(data=>);
-      }
-    } else {
-      getMovies(endpointRef.current).then((data) => {
-        if (data.results) {
-          setMovieList(data.results);
+    const fetchMovies = async () => {
+      try {
+        // get the endponts
+        let endpoints = [];
+        const movieEndpoint = getEndpoint(type, "movie");
+        const tvEndpoint = getEndpoint(type, "tv");
+        if (type === "streaming") {
+          endpoints = [movieEndpoint, tvEndpoint];
+        } else if (type === "now_playing") {
+          endpoints = [movieEndpoint, movieEndpoint];
+        } else if (type === "ontv") {
+          endpoints = [tvEndpoint, tvEndpoint];
         }
-        console.log("Movie data: ", data.results);
-      });
-    }
+
+        // fetch all endpoints
+        const [data1, data2] = await Promise.all([
+          getMovies(endpoints[0], 1),
+          getMovies(endpoints[1], 2),
+        ]);
+
+        const results = [...data1.results, ...data2.results];
+        setMovieList(results);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchMovies();
   }, [type]);
   return (
     <section className=" min-h-[400px]  pt-6 mx-2  md:mx-10 xl:mx-28">
@@ -78,13 +63,13 @@ const Popular = () => {
 
           <div
             className={`${
-              type === "tv" ? "bg-slate-800" : "bg-white"
+              type === "ontv" ? "bg-slate-800" : "bg-white"
             } pr-5 pl-5 rounded-full`}
           >
             <button
-              onClick={() => handleTrending("tv")}
+              onClick={() => handleTrending("ontv")}
               className={`${
-                type === "tv"
+                type === "ontv"
                   ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
                   : "text-black"
               } `}
