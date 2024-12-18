@@ -1,27 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MovieCard from "./MovieCard";
-import { getMovies, getEndpoint } from "../utils/helper";
-
+import { getMovies, getMovieEndpoint, getTvEndpoint } from "../utils/helper";
+import { _ } from "lodash";
 const Popular = () => {
   const [movieList, setMovieList] = useState(Array(10).fill({}));
-  const [type, setType] = useState("streaming");
+  const [type, setType] = useState("popular");
+  const scrollRef = useRef(0);
 
-  const handleTrending = (type) => {
+  const handleType = (type) => {
     setType(type);
+    scrollRef.current.scrollLeft = 0;
   };
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         // get the endponts
         let endpoints = [];
-        const movieEndpoint = getEndpoint(type, "movie");
-        const tvEndpoint = getEndpoint(type, "tv");
-        if (type === "streaming") {
-          endpoints = [movieEndpoint, tvEndpoint];
+        // const movieEndpoint = getMovieEndpoint(type);
+        // const tvEndpoint = getTvEndpoint("popular");
+        if (type === "popular") {
+          endpoints = [
+            getMovieEndpoint("streaming"),
+            getTvEndpoint("streaming"),
+          ];
         } else if (type === "now_playing") {
-          endpoints = [movieEndpoint, movieEndpoint];
+          endpoints = [
+            getMovieEndpoint("now_playing"),
+            getMovieEndpoint("now_playing"),
+          ];
         } else if (type === "ontv") {
-          endpoints = [tvEndpoint, tvEndpoint];
+          endpoints = [
+            getTvEndpoint("airingToday"),
+            getTvEndpoint("airingToday"),
+          ];
         }
 
         // fetch all endpoints
@@ -30,8 +41,10 @@ const Popular = () => {
           getMovies(endpoints[1], 2),
         ]);
 
-        const results = [...data1.results, ...data2.results];
-        setMovieList(results);
+        const results = [...(data1.results || []), ...(data2.results || [])];
+        const shuffleResult = _.shuffle(results);
+        setMovieList(shuffleResult);
+        // console.log("result", shuffleResult);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -46,13 +59,13 @@ const Popular = () => {
         <div className="relative font-semibold border-solid  border-2 border-black rounded-full flex flex-row">
           <div
             className={`${
-              type === "streaming" ? "bg-slate-800" : "bg-white"
+              type === "popular" ? "bg-slate-800" : "bg-white"
             } pr-5 pl-5 rounded-full`}
           >
             <button
-              onClick={() => handleTrending("streaming")}
+              onClick={() => handleType("popular")}
               className={`${
-                type === "streaming"
+                type === "popular"
                   ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
                   : "text-black"
               } `}
@@ -67,7 +80,7 @@ const Popular = () => {
             } pr-5 pl-5 rounded-full`}
           >
             <button
-              onClick={() => handleTrending("ontv")}
+              onClick={() => handleType("ontv")}
               className={`${
                 type === "ontv"
                   ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
@@ -84,7 +97,7 @@ const Popular = () => {
             } pr-5 pl-5 rounded-full`}
           >
             <button
-              onClick={() => handleTrending("now_playing")}
+              onClick={() => handleType("now_playing")}
               className={`${
                 type === "now_playing"
                   ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
@@ -97,12 +110,15 @@ const Popular = () => {
         </div>
       </div>
       <div
+        ref={scrollRef}
         className="flex flex-row  pt-4 overflow-x-auto scrollbar-thin  h-full justify-start gap-2 md:gap-5 "
         style={{ minHeight: "calc(150px * 1.5)" }}
       >
-        {movieList.map((movie, index) => (
-          <MovieCard key={index} movieDetail={movie} />
-        ))}
+        {movieList.map((movie, index) =>
+          movie.poster_path ? (
+            <MovieCard key={index} movieDetail={movie} />
+          ) : null
+        )}
       </div>
     </section>
   );

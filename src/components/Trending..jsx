@@ -1,16 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MovieCard from "./MovieCard";
-import { getTrending } from "../utils/Trending";
+import { _ } from "lodash";
+import { getTrendingEndpoint, getMovies } from "../utils/helper";
 import "../styles/Trending.css";
 const Trending = () => {
   const [trendingList, setTrendingList] = useState([]);
   const [time, setTime] = useState("day");
+  const scrollRef = useRef(0);
 
   const handleTrending = (time) => {
     setTime(time);
+    scrollRef.current.scrollLeft = 0;
   };
   useEffect(() => {
-    getTrending(time, setTrendingList);
+    const endpoint = getTrendingEndpoint(time);
+    getMovies(endpoint)
+      .then((data) => {
+        const shuffleData = _.shuffle(data.results);
+        setTrendingList(shuffleData);
+      })
+      .catch((error) => console.error("Error fetching data: ", error));
   }, [time]);
   return (
     <section className=" min-h-[400px]  pt-6 mx-2  md:mx-10 xl:mx-28">
@@ -53,12 +62,15 @@ const Trending = () => {
         </div>
       </div>
       <div
+        ref={scrollRef}
         className="flex flex-row  pt-4 overflow-x-auto scrollbar-thin  h-full justify-start gap-2 md:gap-5 "
         style={{ minHeight: "calc(150px * 1.5)" }}
       >
-        {trendingList.map((movie, index) => (
-          <MovieCard key={index} movieDetail={movie} />
-        ))}
+        {trendingList.map((movie, index) =>
+          movie.poster_path ? (
+            <MovieCard key={index} movieDetail={movie} />
+          ) : null
+        )}
       </div>
     </section>
   );

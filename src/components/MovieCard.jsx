@@ -1,7 +1,7 @@
 import React from "react";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import "../styles/MovieCard.css";
-import moviePoster from "../../public/moviePoster.png";
+import moviePoster from "../assets/moviePoster.png";
 const posterBaseUrl = import.meta.env.VITE_POSTER_BASE_URL;
 
 const MovieCard = ({ movieDetail }) => {
