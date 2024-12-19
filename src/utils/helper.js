@@ -15,6 +15,16 @@ export const getMovies = async (endpoint, page = 1) => {
   }
 };
 
+export const getMovieDetail = async (endpoint) => {
+  try {
+    const res = await fetch(BASE_URL + endpoint + "&api_key=" + API_KEY);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error accessing the endpoint: ", error);
+  }
+};
+
 export const getTrailer = async (endpoint) => {
   try {
     // Make the API request
@@ -50,6 +60,8 @@ export const getMovieEndpoint = (type, movieId = null) => {
     return `/movie/top_rated${SUFFIX}`;
   } else if (type === "streaming") {
     return `/discover/movie${SUFFIX}`;
+  } else if (type === "movie" && movieId) {
+    return `/movie/${movieId}?append_to_response=videos`;
   }
 };
 
@@ -67,6 +79,8 @@ export const getTvEndpoint = (type, tvId = null) => {
     return `/tv/top_rated${SUFFIX}`;
   } else if (type === "streaming") {
     return `/discover/tv${SUFFIX}`;
+  } else if (type === "tv" && tvId) {
+    return `/tv/${tvId}?append_to_response=videos`;
   }
 };
 

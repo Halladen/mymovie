@@ -23,9 +23,9 @@ const Trending = () => {
   }, [time]);
   return (
     <section className=" min-h-[400px]  pt-6 mx-2  md:mx-10 xl:mx-28">
-      <div className=" flex gap-5 items-center ">
-        <h5 className="text-xl font-semibold pl-2 md:pl-0">Trending</h5>
-        <div className="relative font-semibold border-solid  border-2 border-black rounded-full flex flex-row">
+      <div className=" flex gap-2 sm:gap-5 items-center ">
+        <h5 className="text-lg sm:text-xl sm:font-semibold">Trending</h5>
+        <div className="relative text-sm md:text-base  sm:font-semibold border-solid  border-2 border-black rounded-full flex flex-row">
           <div
             className={`${
               time === "day" ? "bg-slate-800" : "bg-white"

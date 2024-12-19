@@ -11,6 +11,8 @@ import TvTopRated from "./pages/tv-shows/TvTopRated";
 import Favorites from "./pages/Favorites";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ViewDetail from "./pages/ViewDetail";
+
 function App() {
   const { movies } = useMovieContext();
 
@@ -27,6 +29,7 @@ function App() {
         <Route path="/tv-shows/popular" element={<TvPopular />} />
         <Route path="/tv-shows/on-tv" element={<OnTv />} />
         <Route path="/tv-shows/top-rated" element={<TvTopRated />} />
+        <Route path="/:type/:detail" element={<ViewDetail />} />
       </Routes>
       <Footer />
     </BrowserRouter>

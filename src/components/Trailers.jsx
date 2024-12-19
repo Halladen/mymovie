@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import TrailerCard from "./TrailerCard";
+import { Link } from "react-router-dom";
 import {
   getMovies,
   getMovieEndpoint,
@@ -7,9 +8,6 @@ import {
   getTrailer,
 } from "../utils/helper";
 import { _ } from "lodash";
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
-const API_KEY = import.meta.env.VITE_API_KEY;
 
 const bgImageBaseUrl = import.meta.env.VITE_BG_IMAGE_BASE_URL;
 
@@ -63,7 +61,7 @@ const Trailers = () => {
           })
         );
 
-        setBgImage(shuffleResult[0].poster_path);
+        setBgImage(shuffleResult[0].backdrop_path);
         setMovies(addTrailers);
         // console.log(shuffleResult);
       } catch (error) {
@@ -81,7 +79,7 @@ const Trailers = () => {
   };
   return (
     <section
-      className="min-h-[300px] text-white pt-6 pl-10 xl:px-28  bg-cover "
+      className="min-h-[300px] text-white pt-6 px-2  sm:px-10 md:px-20  bg-cover bg-center "
       style={{
         backgroundImage: `
       linear-gradient(to right, rgba(3, 37, 65, 0.75), rgba(3, 37, 65, 0.75)),
@@ -89,16 +87,18 @@ const Trailers = () => {
     `,
       }}
     >
-      <div className=" flex gap-5 items-center">
-        <h5 className="text-xl font-semibold pl-2 md:pl-0">Latest Trailers</h5>
-        <div className="relative font-semibold border-solid  border border-white rounded-full flex flex-row">
+      <div className=" flex gap-2 sm:gap-5  items-center ">
+        <h5 className="text-lg sm:text-xl sm:font-semibold ">
+          Latest Trailers
+        </h5>
+        <div className="relative text-sm md:text-base  sm:font-semibold border-solid  border border-white rounded-full flex flex-row justify-center md:gap-3 lg:gap-5 ">
           <button
             onClick={() => handleType("popular")}
             className={`${
               type === "popular"
                 ? "bg-slate-800 text-black bg-gradient-to-r from-slate-100 to-slate-500 "
                 : "text-white"
-            } px-5 rounded-full`}
+            } px-2 sm:px-5 rounded-full`}
           >
             Popular
           </button>
@@ -109,7 +109,7 @@ const Trailers = () => {
               type === "streaming"
                 ? "bg-slate-800 text-black bg-gradient-to-r from-slate-100 to-slate-500 "
                 : "text-white"
-            } px-5 rounded-full`}
+            } px-2 sm:px-5 rounded-full`}
           >
             Streaming
           </button>
@@ -120,7 +120,7 @@ const Trailers = () => {
               type === "ontv"
                 ? "bg-slate-800 text-black bg-gradient-to-r from-slate-100 to-slate-500 "
                 : "text-white"
-            } px-5 rounded-full `}
+            } px-2 sm:px-5 rounded-full `}
           >
             On TV
           </button>
@@ -131,7 +131,7 @@ const Trailers = () => {
               type === "now_playing"
                 ? "bg-slate-800 text-black bg-gradient-to-r from-slate-100 to-slate-500 "
                 : "text-white"
-            } px-5 rounded-full`}
+            } px-2 sm:px-5 md:pr-5 rounded-full`}
           >
             In Theater
           </button>
@@ -139,7 +139,7 @@ const Trailers = () => {
       </div>
       <div
         ref={scrollRef}
-        className="flex flex-row gap-3 scrollbar-thin overflow-x-auto mt-5 pb-10"
+        className="flex flex-row gap-3 scrollbar-thin overflow-x-auto"
       >
         {movies.map(
           (movie, index) =>
@@ -148,7 +148,7 @@ const Trailers = () => {
             movie.trailer && (
               <TrailerCard
                 key={index}
-                MovieDetail={movie}
+                movieDetail={movie}
                 setBackground={setBgImage}
               />
             )

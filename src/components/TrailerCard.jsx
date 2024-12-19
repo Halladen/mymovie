@@ -1,33 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaPlay } from "react-icons/fa";
-import { MdOutlineClose } from "react-icons/md";
+
+import { Link } from "react-router-dom";
+import TrailerModal from "./TrailerModal";
 
 const posterBaseUrl = import.meta.env.VITE_POSTER_BASE_URL;
 const YOUTUBE_BASE_URL = "https://www.youtube.com/embed/";
 
-const TrailerCard = ({ MovieDetail, setBackground }) => {
+const TrailerCard = ({ movieDetail, setBackground }) => {
   const [iconSize, setIconSize] = useState(44);
   const [isVisible, setIsVisible] = useState(false);
 
-  const heandleBackground = () => setBackground(MovieDetail.backdrop_path);
+  const heandleBackground = () => setBackground(movieDetail.backdrop_path);
   const increaseIconSize = () => setIconSize(54);
   const decreaseIconSize = () => setIconSize(44);
-  const handleModal = (bool) => {
-    setIsVisible(bool);
-  };
 
-  useEffect(() => {}, []);
   return (
-    <div className="relative min-w-[300px] h-[200px] ">
+    <div className="relative min-w-[300px] min-h-[200px] mt-5">
       <div
-        onClick={() => handleModal(true)}
+        onClick={() => setIsVisible(true)}
         onMouseEnter={heandleBackground}
         className=" relative w-full h-[170px] p-2 hover:p-0 transition-all duration-150 ease-in-out"
       >
         <img
           className="w-full h-full rounded-lg relative"
-          src={`${posterBaseUrl}${MovieDetail.backdrop_path}`}
-          alt={`${MovieDetail.original_title} poster`}
+          src={`${posterBaseUrl}${movieDetail.backdrop_path}`}
+          alt={`${movieDetail.original_title} poster`}
         />
         <button
           className="absolute top-0 left-0 flex justify-center items-center h-full w-full  "
@@ -38,30 +36,24 @@ const TrailerCard = ({ MovieDetail, setBackground }) => {
         </button>
       </div>
 
-      <h5 className="text-center font-semibold mt-3">
-        {MovieDetail.original_title || MovieDetail.original_name}
-      </h5>
+      <div className="text-center  mt-1">
+        <Link
+          to={`${movieDetail.original_title ? "movie" : "tv"}/${
+            movieDetail.id
+          }-${
+            movieDetail.original_title
+              ? movieDetail.original_title.split(" ").join("-")
+              : movieDetail.original_name.split(" ").join("-")
+          }`}
+          className="text-lg font-bold"
+        >
+          {movieDetail.original_title || movieDetail.original_name}
+        </Link>
+        <p>{movieDetail.trailer.name || ""}</p>
+      </div>
 
       {isVisible && (
-        <div className="fixed top-0 left-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center h-full w-full z-[1000]">
-          <div className="w-[65%] sm:h-[40%] md:h-[65%] lg:h-[75%] bg-black">
-            <div className="flex justify-between items-center m-5 ">
-              <div className="">
-                {MovieDetail.original_title || MovieDetail.original_name} |
-                Official Trailer
-              </div>
-              <button onClick={() => handleModal(false)}>
-                <MdOutlineClose size={30} />
-              </button>
-            </div>
-            <iframe
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              src={`${YOUTUBE_BASE_URL}${MovieDetail.trailer.key}`}
-              allowfullscreen
-            ></iframe>
-          </div>
-        </div>
+        <TrailerModal movieDetail={movieDetail} setVisible={setIsVisible} />
       )}
     </div>
   );

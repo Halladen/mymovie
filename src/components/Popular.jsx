@@ -53,14 +53,14 @@ const Popular = () => {
     fetchMovies();
   }, [type]);
   return (
-    <section className=" min-h-[400px]  pt-6 mx-2  md:mx-10 xl:mx-28">
-      <div className=" flex gap-5 items-center ">
-        <h5 className="text-xl font-semibold pl-2 md:pl-0">What's Popular</h5>
-        <div className="relative font-semibold border-solid  border-2 border-black rounded-full flex flex-row">
+    <section className=" min-h-[400px]  pt-6 px-2  sm:px-10 md:px-20">
+      <div className=" flex gap-2 sm:gap-5  items-center ">
+        <h5 className="text-lg sm:text-xl sm:font-semibold">What's Popular</h5>
+        <div className="relative border-solid  border-2 border-black text-sm md:text-base  sm:font-semibold  rounded-full flex flex-row justify-center ">
           <div
             className={`${
               type === "popular" ? "bg-slate-800" : "bg-white"
-            } pr-5 pl-5 rounded-full`}
+            } px-2 sm:px-5 rounded-full`}
           >
             <button
               onClick={() => handleType("popular")}
@@ -77,7 +77,7 @@ const Popular = () => {
           <div
             className={`${
               type === "ontv" ? "bg-slate-800" : "bg-white"
-            } pr-5 pl-5 rounded-full`}
+            } px-2 sm:px-5 rounded-full`}
           >
             <button
               onClick={() => handleType("ontv")}
@@ -94,7 +94,7 @@ const Popular = () => {
           <div
             className={`${
               type === "now_playing" ? "bg-slate-800" : "bg-white"
-            } pr-5 pl-5 rounded-full`}
+            } px-2 sm:px-5 rounded-full`}
           >
             <button
               onClick={() => handleType("now_playing")}
