@@ -91,7 +91,7 @@ const Trailers = () => {
         <h5 className="text-lg sm:text-xl sm:font-semibold ">
           Latest Trailers
         </h5>
-        <div className="relative text-sm md:text-base  sm:font-semibold border-solid  border border-white rounded-full flex flex-row justify-center md:gap-3 lg:gap-5 ">
+        <div className="relative text-[1rem] sm:text-sm md:text-base  sm:font-semibold border-solid  border border-white rounded-full flex flex-row justify-center">
           <button
             onClick={() => handleType("popular")}
             className={`${

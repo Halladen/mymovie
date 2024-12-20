@@ -60,7 +60,7 @@ const Popular = () => {
           <div
             className={`${
               type === "popular" ? "bg-slate-800" : "bg-white"
-            } px-2 sm:px-5 rounded-full`}
+            } px-2 sm:px-5 rounded-full flex items-center`}
           >
             <button
               onClick={() => handleType("popular")}

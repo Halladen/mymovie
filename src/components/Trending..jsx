@@ -29,7 +29,7 @@ const Trending = () => {
           <div
             className={`${
               time === "day" ? "bg-slate-800" : "bg-white"
-            } pr-5 pl-5 rounded-full`}
+            } px-2 sm:px-5 rounded-full`}
           >
             <button
               onClick={() => handleTrending("day")}
@@ -46,7 +46,7 @@ const Trending = () => {
           <div
             className={`${
               time === "week" ? "bg-slate-800" : "bg-white"
-            } pl-5 pr-5 rounded-full`}
+            } px-2 sm:px-5 rounded-full`}
           >
             <button
               onClick={() => handleTrending("week")}
