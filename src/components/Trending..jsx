@@ -2,10 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 import MovieCard from "./MovieCard";
 import { _ } from "lodash";
 import { getTrendingEndpoint, getMovies } from "../utils/helper";
+import BigScreenTags from "./BigScreenTags";
+import SmallScreenTags from "./SmallScreenTags";
 import "../styles/Trending.css";
+
+const tags = [
+  ["day", "Today"],
+  ["week", "This Week"],
+];
+
 const Trending = () => {
   const [trendingList, setTrendingList] = useState([]);
   const [time, setTime] = useState("day");
+  const [dropdown, setDropdow] = useState(false);
   const scrollRef = useRef(0);
 
   const handleTrending = (time) => {
@@ -23,43 +32,24 @@ const Trending = () => {
   }, [time]);
   return (
     <section className=" min-h-[400px]  pt-6 mx-2  md:mx-10 xl:mx-28">
-      <div className=" flex gap-2 sm:gap-5 items-center ">
-        <h5 className="text-lg sm:text-xl sm:font-semibold">Trending</h5>
-        <div className="relative text-sm md:text-base  sm:font-semibold border-solid  border-2 border-black rounded-full flex flex-row">
-          <div
-            className={`${
-              time === "day" ? "bg-slate-800" : "bg-white"
-            } px-2 sm:px-5 rounded-full`}
-          >
-            <button
-              onClick={() => handleTrending("day")}
-              className={`${
-                time === "day"
-                  ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
-                  : "text-black"
-              } `}
-            >
-              Today
-            </button>
-          </div>
-
-          <div
-            className={`${
-              time === "week" ? "bg-slate-800" : "bg-white"
-            } px-2 sm:px-5 rounded-full`}
-          >
-            <button
-              onClick={() => handleTrending("week")}
-              className={`${
-                time === "week"
-                  ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
-                  : "text-black"
-              } `}
-            >
-              This Week
-            </button>
-          </div>
-        </div>
+      <div className=" flex gap-5 items-center">
+        <h5 className="text-xl font-bold">Trending</h5>
+        {/* tags for large screen and hide it in small screen */}
+        <BigScreenTags
+          name={"trending"}
+          type={time}
+          tags={tags}
+          setType={handleTrending}
+        />
+        {/* dropdwn for small screens */}
+        <SmallScreenTags
+          name={"trending"}
+          type={time}
+          tags={tags}
+          handleType={handleTrending}
+          dropdown={dropdown}
+          setDropdown={setDropdow}
+        />
       </div>
       <div
         ref={scrollRef}

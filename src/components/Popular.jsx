@@ -2,9 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 import MovieCard from "./MovieCard";
 import { getMovies, getMovieEndpoint, getTvEndpoint } from "../utils/helper";
 import { _ } from "lodash";
+import BigScreenTags from "./BigScreenTags";
+import SmallScreenTags from "./SmallScreenTags";
+
+const tags = [
+  ["popular", "Popular"],
+  ["ontv", "On TV"],
+  ["now_playing", "In Theaters"],
+];
+
 const Popular = () => {
   const [movieList, setMovieList] = useState(Array(10).fill({}));
   const [type, setType] = useState("popular");
+  const [dropdown, setDropdown] = useState(false);
   const scrollRef = useRef(0);
 
   const handleType = (type) => {
@@ -53,61 +63,27 @@ const Popular = () => {
     fetchMovies();
   }, [type]);
   return (
-    <section className=" min-h-[400px]  pt-6 px-2  sm:px-10 md:px-20">
-      <div className=" flex gap-2 sm:gap-5  items-center ">
-        <h5 className="text-lg sm:text-xl sm:font-semibold">What's Popular</h5>
-        <div className="relative border-solid  border-2 border-black text-sm md:text-base  sm:font-semibold  rounded-full flex flex-row justify-center ">
-          <div
-            className={`${
-              type === "popular" ? "bg-slate-800" : "bg-white"
-            } px-2 sm:px-5 rounded-full flex items-center`}
-          >
-            <button
-              onClick={() => handleType("popular")}
-              className={`${
-                type === "popular"
-                  ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
-                  : "text-black"
-              } `}
-            >
-              Streaming
-            </button>
-          </div>
+    <section className=" min-h-[400px]  pt-6 px-2  md:px-10 xl:px-28">
+      <div className=" flex gap-5  items-center ">
+        <h5 className="text-xl font-semibold">What's Popular</h5>
+        {/* big screen tags */}
+        <BigScreenTags
+          name={"popular"}
+          type={type}
+          tags={tags}
+          handleType={handleType}
+          setDropdown={setDropdown}
+        />
 
-          <div
-            className={`${
-              type === "ontv" ? "bg-slate-800" : "bg-white"
-            } px-2 sm:px-5 rounded-full`}
-          >
-            <button
-              onClick={() => handleType("ontv")}
-              className={`${
-                type === "ontv"
-                  ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
-                  : "text-black"
-              } `}
-            >
-              On TV
-            </button>
-          </div>
-
-          <div
-            className={`${
-              type === "now_playing" ? "bg-slate-800" : "bg-white"
-            } px-2 sm:px-5 rounded-full`}
-          >
-            <button
-              onClick={() => handleType("now_playing")}
-              className={`${
-                type === "now_playing"
-                  ? "bg-slate-800 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300"
-                  : "text-black"
-              } `}
-            >
-              In Theaters
-            </button>
-          </div>
-        </div>
+        {/* dropdwn for small screens tags */}
+        <SmallScreenTags
+          name={"popular"}
+          type={type}
+          tags={tags}
+          handleType={handleType}
+          dropdown={dropdown}
+          setDropdown={setDropdown}
+        />
       </div>
       <div
         ref={scrollRef}
