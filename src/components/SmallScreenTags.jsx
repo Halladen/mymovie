@@ -16,7 +16,7 @@ const SmallScreenTags = ({
       className="relative sm:hidden w-32 h-6"
     >
       <div
-        className={`absolute top-0 left-0 py-[1px] w-full border-2  font-semibold  bg-slate-800 z-10 rounded-2xl hover:pb-2 ${
+        className={`absolute top-0 left-0 py-[1px] w-full border-2  font-semibold  bg-slate-800 z-10 rounded-2xl ${
           name == "trailers" ? "" : "border-black"
         }`}
       >
@@ -39,7 +39,7 @@ const SmallScreenTags = ({
             {tags.map(([value, label]) => {
               if (value !== type) {
                 return (
-                  <div key={value} className="hover:bg-slate-700">
+                  <div key={value} className="hover:bg-slate-700 my-2">
                     <li
                       onClick={() => {
                         setDropdown(false);
