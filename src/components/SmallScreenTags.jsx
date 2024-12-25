@@ -16,11 +16,15 @@ const SmallScreenTags = ({
       className="relative sm:hidden w-32 h-6"
     >
       <div
-        className={`absolute top-0 left-0 py-[1px] w-full border-2  font-semibold  bg-slate-800 z-10 rounded-2xl ${
+        className={`absolute top-0 left-0 py-[1px] w-full border-2  font-semibold  bg-slate-800 hover:z-10 rounded-2xl ${
           name == "trailers" ? "" : "border-black"
         }`}
       >
         <button
+          onClick={() => {
+            setDropdown(false);
+            handleType(type);
+          }}
           className={`w-full text-start pl-3  ${
             name == "trailers"
               ? "text-white"

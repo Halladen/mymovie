@@ -1,7 +1,7 @@
 import React from "react";
 
 const TvPopular = () => {
-  return <div>tv popular</div>;
+  return <div className="h-96">tv popular</div>;
 };
 
 export default TvPopular;

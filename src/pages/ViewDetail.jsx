@@ -15,6 +15,7 @@ const ViewDetail = () => {
   const { type, detail } = useParams();
   const [movie, setMovie] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const scrollRef = useRef();
 
   useEffect(() => {
     const getMovie = async () => {
@@ -50,25 +51,23 @@ const ViewDetail = () => {
     return `${hour}h${mins}m`;
   };
   return (
-    <section className="relative">
+    <section ref={scrollRef} className="relative">
       <div
-        className=" min-h-[500px] bg-cover bg-no-repeat bg-center flex flex-wrap md:flex-nowrap gap-10 p-10"
+        className=" min-h-[500px] bg-cover bg-no-repeat bg-center flex flex-wrap md:flex-nowrap justify-center gap-10 p-10"
         style={{
           backgroundImage: `linear-gradient(to right, rgba(157.5, 199.5, 220.5, 1) calc((50vw - 170px) - 340px), rgba(157.5, 199.5, 220.5, 0.84) 50%, rgba(157.5, 199.5, 220.5, 0.84) 100%),url(${bgImageBaseUrl}${movie?.backdrop_path})`,
         }}
       >
         {/* movie image */}
-        <div className="">
-          <img
-            className="h-[450px] min-w-[300px] rounded-lg"
-            src={bgImageBaseUrl + movie?.poster_path}
-            alt={movie?.original_title || movie?.original_name}
-          />
-          {/* <div className="h-[60px] w-[300px] bg-slate-600 rounded-b-lg flex justify-center items-center"></div> */}
-        </div>
+
+        <img
+          className="h-[450px] min-w-[300px] rounded-lg"
+          src={bgImageBaseUrl + movie?.poster_path}
+          alt={movie?.original_title || movie?.original_name}
+        />
 
         {/* movie details */}
-        <div className="my-7">
+        <div className="">
           <div className=" my-1 font-semibold  text-2xl md:text-4xl ">
             {movie?.original_title || movie?.original_name || "unknown"}
             {movie?.release_date || movie?.first_air_date ? (

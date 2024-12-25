@@ -1,7 +1,7 @@
 import React from "react";
 
 const MoviesTopRated = () => {
-  return <div>movies top rated</div>;
+  return <div className="h-96">movies top rated</div>;
 };
 
 export default MoviesTopRated;

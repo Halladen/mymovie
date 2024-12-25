@@ -12,26 +12,36 @@ import Favorites from "./pages/Favorites";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ViewDetail from "./pages/ViewDetail";
+import Watchlist from "./pages/Watchlist";
+import SearchQuery from "./pages/SearchQuery";
+import { useEffect } from "react";
 
 function App() {
-  const { movies } = useMovieContext();
+  useEffect(() => {
+    // return scrollbar to the top position on refresh
+    window.history.scrollRestoration = "manual";
+  }, []);
 
   return (
     <BrowserRouter>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/movies/popular" element={<MoviesPopular />} />
-        <Route path="/movies/top-rated" element={<MoviesTopRated />} />
-        <Route path="/movies/now-playing" element={<MoviesNowPlaying />} />
-        <Route path="/movies/upcomming" element={<MoviesUpcoming />} />
-        <Route path="/tv-shows/popular" element={<TvPopular />} />
-        <Route path="/tv-shows/on-tv" element={<OnTv />} />
-        <Route path="/tv-shows/top-rated" element={<TvTopRated />} />
-        <Route path="/:type/:detail" element={<ViewDetail />} />
-      </Routes>
-      <Footer />
+      <div className=" pt-16">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/:phrase" element={<SearchQuery />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/movies/popular" element={<MoviesPopular />} />
+          <Route path="/movies/top-rated" element={<MoviesTopRated />} />
+          <Route path="/movies/now-playing" element={<MoviesNowPlaying />} />
+          <Route path="/movies/upcoming" element={<MoviesUpcoming />} />
+          <Route path="/tv-shows/popular" element={<TvPopular />} />
+          <Route path="/tv-shows/on-tv" element={<OnTv />} />
+          <Route path="/tv-shows/top-rated" element={<TvTopRated />} />
+          <Route path="/:type/:detail" element={<ViewDetail />} />
+          <Route path="/Watchlist" element={<Watchlist />} />
+        </Routes>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }

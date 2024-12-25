@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-// import posterImg from "/poster2.jpg";
+import { useNavigate } from "react-router-dom";
+// import posterImg from "/poster2.jpg";2222
 
 const IMAGE_BASE_URL = import.meta.env.VITE_BG_IMAGE_BASE_URL;
 const MOVIE_BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -7,6 +8,8 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 
 const SearchSection = () => {
   const [posterUrl, setPosterUrl] = useState("");
+  const [value, setValue] = useState("");
+  const navigate = useNavigate();
 
   const getPoster = async () => {
     try {
@@ -25,6 +28,13 @@ const SearchSection = () => {
   useEffect(() => {
     getPoster();
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (value.trim()) {
+      navigate(`/search?query=${value}`);
+    }
+  };
 
   return (
     <section
@@ -45,11 +55,17 @@ const SearchSection = () => {
             Millions of movies and TV shows to discover. Explore now.
           </h2>
 
-          <form action="" className="relative mt-10">
+          <form
+            onSubmit={(e) => handleSubmit(e)}
+            action=""
+            className="relative mt-10"
+          >
             <input
               className="rounded-full w-full py-3 px-4 outline-none text-black"
               type="text"
               placeholder="Search for a movie, tv shows...."
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
             />
 
             <button className="absolute right-0 top-0 h-full px-5 rounded-full bg-gradient-to-r from-slate-300 to-blue-300 hover:text-black">

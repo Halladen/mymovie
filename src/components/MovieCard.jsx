@@ -17,7 +17,7 @@ const MovieCard = ({ movieDetail }) => {
   // console.log(POSTER_BASE_URL + movieDetail.poster_path);
   // console.log("movieDetail: ", movieDetail);
   return (
-    <div className="">
+    <div className="hover:scale-105 ease-in-out duration-150 h-fit">
       <div className="relative ">
         <Link
           to={`${movieDetail.title ? "movie" : "tv"}/${movieDetail.id}-${
@@ -25,10 +25,10 @@ const MovieCard = ({ movieDetail }) => {
               ? movieDetail.title.split(" ").join("-")
               : movieDetail.name.split(" ").join("-")
           }`}
-          className="text-base font-bold"
+          className="text-base font-bold "
         >
           <img
-            className="h-60 min-w-40 rounded-lg"
+            className="h-60 min-w-40 rounded-lg "
             src={
               movieDetail.poster_path
                 ? posterBaseUrl + movieDetail.poster_path

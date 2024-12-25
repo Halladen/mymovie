@@ -4,7 +4,6 @@ import { _ } from "lodash";
 import { getTrendingEndpoint, getMovies } from "../utils/helper";
 import BigScreenTags from "./BigScreenTags";
 import SmallScreenTags from "./SmallScreenTags";
-import "../styles/Trending.css";
 
 const tags = [
   ["day", "Today"],

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import SearchSection from "../components/SearchSection";
 import { useMovieContext } from "../contexts/MovieContext";

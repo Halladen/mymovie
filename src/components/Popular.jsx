@@ -87,8 +87,7 @@ const Popular = () => {
       </div>
       <div
         ref={scrollRef}
-        className="flex flex-row  pt-4 overflow-x-auto scrollbar-thin  h-full justify-start gap-2 md:gap-5 "
-        style={{ minHeight: "calc(150px * 1.5)" }}
+        className="flex flex-row  pt-4 overflow-x-auto scrollbar-thin  justify-start gap-5 "
       >
         {movieList.map((movie, index) =>
           movie.poster_path ? (
