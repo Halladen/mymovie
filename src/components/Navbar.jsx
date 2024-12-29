@@ -7,6 +7,8 @@ const tvs = ["Popular", "On TV", "Top Rated"];
 const Navbar = () => {
   const [isToggle, setIsToggle] = useState(false);
   const [isMovies, setIsMovies] = useState(false);
+  const [isMoviesOption, setIsMoviesOption] = useState(false);
+  const [isTvOptions, setIsTvOptions] = useState(false);
   const [isTV, setIsTV] = useState(false);
   const sidebarRef = useRef(null);
   const buttonRef = useRef(null);
@@ -41,8 +43,6 @@ const Navbar = () => {
 
   return (
     <div className="relative">
-      {/* on toggle */}
-
       <div className="text-white fixed w-full h-16 bg-slate-800 flex justify-between md:justify-center items-center  flex-row z-10 md:gap-10 px-10 md:px-5  py-5 ">
         {/* big screen */}
         <Link
@@ -163,46 +163,72 @@ const Navbar = () => {
         <div className="hidden md:flex  items-center justify-center gap-20  md:gap-44 lg:gap-72">
           <div className=" flex items-center">
             <div className="flex gap-10">
-              <div className="relative group  py-4 cursor-pointer">
-                <span className="font-semibold">Movies</span>
-                <div className="absolute mt-1 hidden border  bg-white text-black   group-hover:block w-32 rounded hover:flex flex-col gap-4">
-                  {movies.map((movie, index) => (
-                    <Link
-                      to={`/movies/${
-                        movie == "Now Playing"
-                          ? "now-playing"
-                          : movie == "Top Rated"
-                          ? "top-rated"
-                          : movie.toLowerCase()
-                      }`}
-                      key={index}
-                      className="hover:bg-slate-300 w-full block mt-3 pl-3 hover:pl-3.5"
-                    >
-                      {movie}
-                    </Link>
-                  ))}
-                </div>
+              <div className="relative py-4 cursor-pointer">
+                <span
+                  onClick={() =>
+                    setIsMoviesOption((prev) => (prev ? false : true))
+                  }
+                  className="font-semibold hover:text-slate-300"
+                >
+                  Movies
+                </span>
+                {isMoviesOption && (
+                  <div
+                    onMouseLeave={() => setIsMoviesOption(false)}
+                    className="absolute mt-1 py-2  border  bg-white text-black  w-32 rounded flex flex-col gap-1"
+                  >
+                    {movies.map((movie, index) => (
+                      <Link
+                        onClick={() => setIsMoviesOption(false)}
+                        to={`/movies/${
+                          movie == "Now Playing"
+                            ? "now-playing"
+                            : movie == "Top Rated"
+                            ? "top-rated"
+                            : movie.toLowerCase()
+                        }`}
+                        key={index}
+                        className="hover:bg-slate-300 w-full  pl-3 hover:pl-3.5"
+                      >
+                        {movie}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
-              <div className="relative group py-4  cursor-pointer">
-                <span className="font-semibold">TV Shows</span>
+              <div className="relative py-4  cursor-pointer">
+                <span
+                  onClick={() =>
+                    setIsTvOptions((prev) => (prev ? false : true))
+                  }
+                  className="font-semibold hover:text-slate-300"
+                >
+                  TV Shows
+                </span>
 
-                <div className="absolute border mt-1 bg-white text-black hidden  group-hover:block w-32 rounded hover:flex flex-col gap-4">
-                  {tvs.map((tv, index) => (
-                    <Link
-                      to={`/tv-shows/${
-                        tv == "Top Rated"
-                          ? "top-rated"
-                          : tv == "On TV"
-                          ? "on-tv"
-                          : tv.toLocaleLowerCase()
-                      }`}
-                      key={index}
-                      className="hover:bg-slate-300 w-full block mt-3 pl-3 hover:pl-3.5"
-                    >
-                      {tv}
-                    </Link>
-                  ))}
-                </div>
+                {isTvOptions && (
+                  <div
+                    onMouseLeave={() => setIsTvOptions(false)}
+                    className="absolute border mt-1 py-2 bg-white text-black   w-32 rounded flex flex-col gap-1"
+                  >
+                    {tvs.map((tv, index) => (
+                      <Link
+                        onClick={() => setIsTvOptions(false)}
+                        to={`/tv-shows/${
+                          tv == "Top Rated"
+                            ? "top-rated"
+                            : tv == "On TV"
+                            ? "on-tv"
+                            : tv.toLocaleLowerCase()
+                        }`}
+                        key={index}
+                        className="hover:bg-slate-300 w-full block pl-3 hover:pl-3.5"
+                      >
+                        {tv}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

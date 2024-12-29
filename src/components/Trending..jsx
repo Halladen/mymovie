@@ -38,7 +38,7 @@ const Trending = () => {
           name={"trending"}
           type={time}
           tags={tags}
-          setType={handleTrending}
+          handleType={handleTrending}
         />
         {/* dropdwn for small screens */}
         <SmallScreenTags

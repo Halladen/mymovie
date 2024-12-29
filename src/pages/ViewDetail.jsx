@@ -8,6 +8,7 @@ import {
 import { MdFavorite, MdBookmarkAdd } from "react-icons/md";
 import { IoMdPlay } from "react-icons/io";
 import TrailerModal from "../components/TrailerModal";
+import { handleBookmark, handleFavorite } from "../utils/helper";
 
 const bgImageBaseUrl = import.meta.env.VITE_BG_IMAGE_BASE_URL;
 
@@ -15,13 +16,26 @@ const ViewDetail = () => {
   const { type, detail } = useParams();
   const [movie, setMovie] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [favorite, setFavorite] = useState(false);
+  const [bookmark, setBookmark] = useState(false);
   const scrollRef = useRef();
+
+  useEffect(() => {
+    // check if movie in favorites list
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const isFavorite = favorites.some((item) => item.id === movie?.id);
+    setFavorite(isFavorite);
+
+    // check if movie in bookmarks
+    const bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+    const isBookmark = bookmarks.some((item) => item.id === movie?.id);
+    setBookmark(isBookmark);
+  }, [movie?.id]);
 
   useEffect(() => {
     const getMovie = async () => {
       try {
         const id = detail.split("-")[0] || "";
-        console.log("type: ", type, "id: ", id);
 
         const endpoint =
           type === "movie"
@@ -139,11 +153,17 @@ const ViewDetail = () => {
 
           {/* favorite, add to list and plya trailer */}
           <div className="flex justify-start items-center gap-3">
-            <button className="bg-slate-700 rounded-full h-10 w-10 flex justify-center items-center">
-              <MdFavorite color="white" />
+            <button
+              onClick={() => handleFavorite(movie, favorite, setFavorite)}
+              className="bg-slate-700 rounded-full h-10 w-10 flex justify-center items-center"
+            >
+              <MdFavorite color={favorite ? "red" : "white"} />
             </button>
-            <button className="bg-slate-700 rounded-full h-10 w-10 flex justify-center items-center">
-              <MdBookmarkAdd color="white" />
+            <button
+              onClick={() => handleBookmark(movie, bookmark, setBookmark)}
+              className="bg-slate-700 rounded-full h-10 w-10 flex justify-center items-center"
+            >
+              <MdBookmarkAdd color={bookmark ? "red" : "white"} />
             </button>
             <button
               onClick={() => setIsVisible(true)}

@@ -93,3 +93,51 @@ export const getTrendingEndpoint = (time) => {
     return "";
   }
 };
+
+export const handleBookmark = (movieDetail, bookmark, setBookmark) => {
+  //retrieve existance favorites in localstorage
+  const existingBookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+  if (bookmark) {
+    // remove the current movie from existingFavorite
+    const updateBookmarks = [
+      ...existingBookmarks.filter((item) => item.id !== movieDetail.id),
+    ];
+
+    // save the favorite array backe to localstorage
+    localStorage.setItem("bookmarks", JSON.stringify(updateBookmarks));
+
+    setBookmark(false);
+  } else {
+    // update existingFavorite
+    const updateBookmarks = [...existingBookmarks, movieDetail];
+
+    // save updateFavorites back to localstorage
+    localStorage.setItem("bookmarks", JSON.stringify(updateBookmarks));
+
+    setBookmark(true);
+  }
+};
+
+export const handleFavorite = (movieDetail, favorite, setFavorite) => {
+  //retrieve existance favorites in localstorage
+  const existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  if (favorite) {
+    // remove the current movie from existingFavorite
+    const updateFavorites = [
+      ...existingFavorites.filter((item) => item.id !== movieDetail.id),
+    ];
+
+    // save the favorite array backe to localstorage
+    localStorage.setItem("favorites", JSON.stringify(updateFavorites));
+
+    setFavorite(false);
+  } else {
+    // update existingFavorite
+    const updateFavorites = [...existingFavorites, movieDetail];
+
+    // save updateFavorites back to localstorage
+    localStorage.setItem("favorites", JSON.stringify(updateFavorites));
+
+    setFavorite(true);
+  }
+};

@@ -1,7 +1,11 @@
 import React from "react";
 
 const MoviesNowPlaying = () => {
-  return <div className="h-96">movies now playing</div>;
+  return (
+    <div className="h-96 text-center text-xl font-bold pt-10">
+      No Content to Show
+    </div>
+  );
 };
 
 export default MoviesNowPlaying;

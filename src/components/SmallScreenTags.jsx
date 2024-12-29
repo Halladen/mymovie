@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 const SmallScreenTags = ({
@@ -9,20 +9,34 @@ const SmallScreenTags = ({
   dropdown,
   setDropdown,
 }) => {
+  const tagRef = useRef(null);
+
+  useEffect(() => {
+    // handle click outside the tags' div
+    const handleClickOutside = (event) => {
+      if (tagRef.current && !tagRef.current.contains(event.target)) {
+        setDropdown(false);
+      }
+    };
+
+    if (dropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  });
   return (
-    <div
-      onMouseEnter={() => setDropdown(true)}
-      onMouseLeave={() => setDropdown(false)}
-      className="relative sm:hidden w-32 h-6"
-    >
+    <div ref={tagRef} className="relative sm:hidden w-32 h-6">
       <div
-        className={`absolute top-0 left-0 py-[1px] w-full border-2  font-semibold  bg-slate-800 hover:z-10 rounded-2xl ${
-          name == "trailers" ? "" : "border-black"
-        }`}
+        className={`absolute top-0 left-0 py-[1px] w-full border-2  font-semibold  bg-slate-800  rounded-2xl ${
+          dropdown ? "z-10" : ""
+        } ${name == "trailers" ? "" : "border-black"}`}
       >
         <button
           onClick={() => {
-            setDropdown(false);
+            setDropdown((prev) => (prev ? false : true));
             handleType(type);
           }}
           className={`w-full text-start pl-3  ${

@@ -1,7 +1,11 @@
 import React from "react";
 
 const Favorites = () => {
-  return <div className="h-96">favorite</div>;
+  return (
+    <div className="h-96 text-center text-xl font-bold pt-10">
+      No Content to Show
+    </div>
+  );
 };
 
 export default Favorites;

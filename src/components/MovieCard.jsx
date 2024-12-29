@@ -1,21 +1,29 @@
-import React from "react";
-import { HeartIcon } from "@heroicons/react/24/solid";
+import React, { useEffect, useState } from "react";
 import "../styles/MovieCard.css";
 import moviePoster from "../assets/moviePoster.png";
 import { Link } from "react-router-dom";
-import {
-  MdFavorite,
-  MdBookmarkAdd,
-  MdOutlineBookmarkAdd,
-} from "react-icons/md";
-import { IoMdPlay } from "react-icons/io";
-
+import { MdFavorite, MdBookmarkAdded } from "react-icons/md";
+import { handleBookmark, handleFavorite } from "../utils/helper";
 const posterBaseUrl = import.meta.env.VITE_POSTER_BASE_URL;
 
 const MovieCard = ({ movieDetail }) => {
-  const onFavourite = () => {};
-  // console.log(POSTER_BASE_URL + movieDetail.poster_path);
-  // console.log("movieDetail: ", movieDetail);
+  const [favorite, setFavorite] = useState(false);
+  const [bookmark, setBookmark] = useState(false);
+
+  useEffect(() => {
+    // check if the current movie in the favorites
+    // some method return true or false
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const isFavorite = favorites.some((item) => item.id === movieDetail.id);
+    setFavorite(isFavorite);
+
+    // check if the current movie in the favorites
+    const bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+    const isBookmark = bookmarks.some((item) => item.id === movieDetail.id);
+
+    setBookmark(isBookmark);
+  }, [movieDetail.id]);
+
   return (
     <div className="hover:scale-105 ease-in-out duration-150 h-fit">
       <div className="relative ">
@@ -53,12 +61,19 @@ const MovieCard = ({ movieDetail }) => {
         </div>
 
         {/* favorite and add to list icon */}
-        <div className="absolute top-1 right-1 p-1 flex gap-2 bg-slate-300 rounded-lg">
-          <button>
-            <MdFavorite color="black" />
+        <div className="absolute top-1 right-1 p-1 flex gap-2   rounded-lg">
+          <button
+            onClick={() => handleFavorite(movieDetail, favorite, setFavorite)}
+            className="bg-slate-700 rounded-full p-1"
+          >
+            <MdFavorite color={`${favorite ? "red" : "white"}`} />
           </button>
-          <button>
-            <MdOutlineBookmarkAdd color="black" />
+
+          <button
+            onClick={() => handleBookmark(movieDetail, bookmark, setBookmark)}
+            className="bg-slate-700 rounded-full p-1"
+          >
+            <MdBookmarkAdded color={`${bookmark ? "red" : "white"}`} />
           </button>
         </div>
       </div>
