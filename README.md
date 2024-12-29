@@ -1,8 +1,15 @@
-# React + Vite
+# themoviedb clone app is an app for exploring a wide range of movies and tv shows content that has the following fanctionality:
+- show movies and tv shows that are trendings on the themoviedb website
+- watch latest trailers for different tags
+- show a different range of popular movies and tv shows
+- add to favorites
+- add to watchlists
+- responsive design
+- working with themoviedb api
+- 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# libraries:
+- react
+- tailwindcss
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  
