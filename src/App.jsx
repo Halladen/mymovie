@@ -15,15 +15,22 @@ import ViewDetail from "./pages/ViewDetail";
 import Watchlist from "./pages/Watchlist";
 import SearchQuery from "./pages/SearchQuery";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+// reset the scrollbar to top on location change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 function App() {
-  useEffect(() => {
-    // return scrollbar to the top position on refresh
-    window.history.scrollRestoration = "manual";
-  }, []);
-
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Navbar />
       <div className=" pt-16">
         <Routes>
